@@ -1,6 +1,6 @@
 
 // Selección de etapa de cultivo
-function etapaCultivo() {
+function asistenteCultivo() {
     
     let etapa = prompt("Selecciona la etapa de cultivo, ingresa 1 para Plántula, 2 para Vegetación o 3 para Floración: ");
 
@@ -10,9 +10,9 @@ function etapaCultivo() {
         if (etapa === null) {
             alert("😮 No te vayas, queremos ayudarte con tu cultivo! 🤝🏼");
             etapa = prompt("Vamos de nuevo. Ingresa 1 para Plántula, 2 para Vegetación o 3 para Floración: ");
+            etapaValida = etapa === "1" || etapa === "2" || etapa === "3";
         } else {
             etapa = prompt("Etapa de cultivo no válida. Ingresa 1 para Plántula, 2 para Vegetación o 3 para Floración: ");
-
             etapaValida = etapa === "1" || etapa === "2" || etapa === "3";
         }
     }
@@ -26,6 +26,7 @@ function etapaCultivo() {
     // Comparar con rangos recomendados según la etapa
     function verificarParametros(etapa, tempAmb, humAmb, humSust, phSust) {
         switch (etapa) {
+
             case "1":
                 if (tempAmb < 21 || tempAmb > 26) {
                     alert("🌡 La temperatura está fuera del rango recomendado para la etapa de plántula. Se sugiere que se encuentre entre 21 y 26 grados centígrados.");
@@ -43,7 +44,6 @@ function etapaCultivo() {
                     alert("⚠ El pH del sustrato está fuera del rango recomendado para la etapa de plántula. Se sugiere que se encuentre entre 5.8 y 6.2");
                 }
                 break;
-    
     
             case "2":
                 if (tempAmb < 20 || tempAmb > 25) {
