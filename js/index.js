@@ -1,4 +1,4 @@
-
+//Creacion clase para las distintas etapas
 class Etapas {
     constructor(rangoTempAmb, rangoHumAmb, rangoHumSust, rangoPhSust) {
         this.rangoTempAmb = rangoTempAmb;
@@ -7,35 +7,32 @@ class Etapas {
         this.rangoPhSust = rangoPhSust;
     }
 
+    // Compara con rangos recomendados según la etapa
     verificarParametros(tempAmb, humAmb, humSust, phSust) {
-        if (
-            tempAmb < this.rangoTempAmb.min || tempAmb > this.rangoTempAmb.max
-        ) {
-            alert("🌡 La temperatura está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoTempAmb.min + " y " + this.rangoTempAmb.max + " grados centígrados.");
+        const alertaRango = [];
+        
+
+        if (tempAmb < this.rangoTempAmb.min || tempAmb > this.rangoTempAmb.max) {
+            alertaRango.push("🌡 La temperatura registrada de " + tempAmb + "ºC está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoTempAmb.min + "ºC y " + this.rangoTempAmb.max + "ºC.");
         }
 
-        if (
-            humAmb < this.rangoHumAmb.min || humAmb > this.rangoHumAmb.max
-        ) {
-            alert("☔ La humedad ambiente está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoHumAmb.min + " y " + this.rangoHumAmb.max + "%.");
+        if (humAmb < this.rangoHumAmb.min || humAmb > this.rangoHumAmb.max) {
+            alertaRango.push("☔ La humedad relativa ambiente registrada de " + humAmb + "% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoHumAmb.min + " y " + this.rangoHumAmb.max + "%.");
         }
 
-        if (
-            humSust < this.rangoHumSust.min || humSust > this.rangoHumSust.max
-        ) {
-            alert("💧 La humedad del sustrato está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoHumSust.min + " y " + this.rangoHumSust.max + "%.");
+        if (humSust < this.rangoHumSust.min || humSust > this.rangoHumSust.max) {
+            alertaRango.push("💧 La humedad del sustrato registrada de " + humSust + "% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoHumSust.min + " y " + this.rangoHumSust.max + "%.");
         }
 
-        if (
-            phSust < this.rangoPhSust.min || phSust > this.rangoPhSust.max
-        ) {
-            alert("⚠ El pH del sustrato está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoPhSust.min + " y " + this.rangoPhSust.max);
+        if (phSust < this.rangoPhSust.min || phSust > this.rangoPhSust.max) {
+            alertaRango.push("⚠ El pH del sustrato registrado de " + phSust + "está fuera del el rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoPhSust.min + " y " + this.rangoPhSust.max);
         }
+        
+        return alertaRango;
     }
-
-
 }
 
+//Creación objetos etapas con sus rangos de parámetros
 const plantula = new Etapas(
     { min: 21, max: 26 },
     { min: 65, max: 75 },
@@ -59,8 +56,8 @@ const floracion = new Etapas(
 
 function asistenteCultivo() {
     let etapa = prompt("Selecciona la etapa de cultivo, ingresa 1 para Plántula, 2 para Vegetación o 3 para Floración: ");
-
     let etapaValida = etapa === "1" || etapa === "2" || etapa === "3";
+    let advertencias = [];
 
     while (!etapaValida) {
         if (etapa === null) {
@@ -73,24 +70,35 @@ function asistenteCultivo() {
         }
     }
 
-    const tempAmb = parseFloat(prompt("Introduce la temperatura ambiente (en ºC): "));
-    const humAmb = parseFloat(prompt("Introduce la humedad ambiente (% humedad relativa): "));
-    const humSust = parseFloat(prompt("Introduce la humedad del sustrato: "));
+    // Ingreso valores de los parámetros
+    const tempAmb = parseFloat(prompt("Introduce la temperatura ambiente en ºC: "));
+    const humAmb = parseFloat(prompt("Introduce la humedad relativa ambiente en %: "));
+    const humSust = parseFloat(prompt("Introduce la humedad del sustrato en %: "));
     const phSust = parseFloat(prompt("Introduce el pH del sustrato: "));
+
+    
 
     switch (etapa) {
         case "1":
-            plantula.verificarParametros(tempAmb, humAmb, humSust, phSust);
+            advertencias = plantula.verificarParametros(tempAmb, humAmb, humSust, phSust);
             break;
         case "2":
-            vegetativa.verificarParametros(tempAmb, humAmb, humSust, phSust);
+            advertencias = vegetativa.verificarParametros(tempAmb, humAmb, humSust, phSust);
             break;
         case "3":
-            floracion.verificarParametros(tempAmb, humAmb, humSust, phSust);
+            advertencias = floracion.verificarParametros(tempAmb, humAmb, humSust, phSust);
             break;
+    }
+
+    const fecha = new Date()
+
+    if (advertencias.length > 0) {
+        alert("⛔Advertencias⛔\n\n" + advertencias.join("\n\n"));
+        console.table(fecha + "\n\n" + advertencias.join("\n\n"))
+    } else {
+        alert("Buenas noticias! Todos los parámetros están dentro del rango recomendado!✔");
     }
 }
 
-// Llamada a la función para iniciar el asistente de cultivo
-asistenteCultivo();
-
+// Llamada a la función principal
+//asistenteCultivo();
