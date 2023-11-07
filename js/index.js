@@ -1,3 +1,14 @@
+//Calcula porcentaje de desviación
+function porcentajeDesviacion(valor, min, max) {
+    if (valor < min) {
+        return ((min - valor) / min) * 100;
+    } else if (valor > max) {
+        return ((valor - max) / max) * 100;
+    } else {
+        return 0;
+    }
+}
+
 //Creacion clase para las distintas etapas
 class Etapas {
     constructor(rangoTempAmb, rangoHumAmb, rangoHumSust, rangoPhSust) {
@@ -10,24 +21,28 @@ class Etapas {
     // Compara con rangos recomendados según la etapa
     verificarParametros(tempAmb, humAmb, humSust, phSust) {
         const alertaRango = [];
-        
+        const porcentajeDesviacionTemp = porcentajeDesviacion(tempAmb, this.rangoTempAmb.min, this.rangoTempAmb.max);
+        const porcentajeDesviacionHumAmb = porcentajeDesviacion(humAmb, this.rangoHumAmb.min, this.rangoHumAmb.max);
+        const porcentajeDesviacionHumSust = porcentajeDesviacion(humSust, this.rangoHumSust.min, this.rangoHumSust.max);
+        const porcentajeDesviacionPhSust = porcentajeDesviacion(phSust, this.rangoPhSust.min, this.rangoPhSust.max);
+
 
         if (tempAmb < this.rangoTempAmb.min || tempAmb > this.rangoTempAmb.max) {
-            alertaRango.push("🌡 La temperatura registrada de " + tempAmb + "ºC está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoTempAmb.min + "ºC y " + this.rangoTempAmb.max + "ºC.");
+            alertaRango.push("🌡 La temperatura registrada de " + tempAmb + "ºC está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoTempAmb.min + "ºC y " + this.rangoTempAmb.max + "ºC.\nPorcentaje de desviación de la temperatura ambiente: " + Math.round(porcentajeDesviacionTemp) + "%");
         }
 
         if (humAmb < this.rangoHumAmb.min || humAmb > this.rangoHumAmb.max) {
-            alertaRango.push("☔ La humedad relativa ambiente registrada de " + humAmb + "% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoHumAmb.min + " y " + this.rangoHumAmb.max + "%.");
+            alertaRango.push("☔ La humedad relativa ambiente registrada de " + humAmb + "% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoHumAmb.min + " y " + this.rangoHumAmb.max + "%.\nPorcentaje de desviación de la humedad ambiente: " + Math.round(porcentajeDesviacionHumAmb) + "%");
         }
 
         if (humSust < this.rangoHumSust.min || humSust > this.rangoHumSust.max) {
-            alertaRango.push("💧 La humedad del sustrato registrada de " + humSust + "% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoHumSust.min + " y " + this.rangoHumSust.max + "%.");
+            alertaRango.push("💧 La humedad del sustrato registrada de " + humSust + "% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoHumSust.min + " y " + this.rangoHumSust.max + "%.\nPorcentaje de desviación de la humedad del sustrato: " + Math.round(porcentajeDesviacionHumSust) + "%");
         }
 
         if (phSust < this.rangoPhSust.min || phSust > this.rangoPhSust.max) {
-            alertaRango.push("⚠ El pH del sustrato registrado de " + phSust + "está fuera del el rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoPhSust.min + " y " + this.rangoPhSust.max);
+            alertaRango.push("⚠ El pH del sustrato registrado de " + phSust + "está fuera del el rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoPhSust.min + " y " + this.rangoPhSust.max + ".\nPorcentaje de desviación del Ph: " + Math.round(porcentajeDesviacionPhSust) + "%");
         }
-        
+
         return alertaRango;
     }
 }
@@ -54,6 +69,8 @@ const floracion = new Etapas(
     { min: 6.0, max: 6.5 }
 );
 
+
+//Función principal
 function asistenteCultivo() {
     let etapa = prompt("BIENVENIDX A TU ASISTENTE DE CULTIVO\n\nSelecciona la etapa de cultivo. Ingresa:\n1. 🌱Plántula\n2. 🌳Vegetativa\n3. 💐Floración ");
     let etapaValida = etapa === "1" || etapa === "2" || etapa === "3";
