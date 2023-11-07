@@ -127,8 +127,8 @@ const usuarios = [
 
 // Función para validar el usuario
 function validarUsuario() {
-    const usuarioIngresado = prompt("Ingrese su nombre de usuario:");
-    const contraseniaIngresada = prompt("Ingrese su contraseña:");
+    const usuarioIngresado = prompt("Te damos la bienvenida a tu Asistente de Cultivos!\n\nIngrese su nombre de usuario: ");
+    const contraseniaIngresada = prompt("Te damos la bienvenida a tu Asistente de Cultivos!\n\nIngrese su contraseña: ");
 
     const usuarioEncontrado = usuarios.find(
         (usuario) => usuario.usuario === usuarioIngresado && usuario.contrasenia === contraseniaIngresada);
