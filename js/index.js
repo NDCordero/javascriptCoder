@@ -101,4 +101,4 @@ function asistenteCultivo() {
 }
 
 // Llamada a la función principal
-asistenteCultivo();
+//asistenteCultivo();
