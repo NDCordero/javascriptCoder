@@ -99,6 +99,3 @@ function asistenteCultivo() {
         alert("Buenas noticias! Todos los parámetros están dentro del rango recomendado!✔");
     }
 }
-
-// Llamada a la función principal
-//asistenteCultivo();
