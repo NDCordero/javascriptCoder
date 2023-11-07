@@ -55,17 +55,16 @@ const floracion = new Etapas(
 );
 
 function asistenteCultivo() {
-    let etapa = prompt("Selecciona la etapa de cultivo, ingresa 1 para Plántula, 2 para Vegetación o 3 para Floración: ");
+    let etapa = prompt("BIENVENIDX A TU ASISTENTE DE CULTIVO\n\nSelecciona la etapa de cultivo. Ingresa:\n1. 🌱Plántula\n2. 🌳Vegetativa\n3. 💐Floración ");
     let etapaValida = etapa === "1" || etapa === "2" || etapa === "3";
     let advertencias = [];
 
     while (!etapaValida) {
         if (etapa === null) {
-            alert("😮 No te vayas, queremos ayudarte con tu cultivo! 🤝🏼");
-            etapa = prompt("Vamos de nuevo. Ingresa 1 para Plántula, 2 para Vegetación o 3 para Floración: ");
-            etapaValida = etapa === "1" || etapa === "2" || etapa === "3";
+            alert("😮 Lamentamos que quieras irte, te esperamos de regreso! 🤝🏼");
+            return
         } else {
-            etapa = prompt("Etapa de cultivo no válida. Ingresa 1 para Plántula, 2 para Vegetación o 3 para Floración: ");
+            etapa = prompt("⛔Etapa de cultivo no válida. Intenta nuevamente!\n\n1. 🌱Plántula\n2. 🌳Vegetativa\n3. 💐Floración ");
             etapaValida = etapa === "1" || etapa === "2" || etapa === "3";
         }
     }
@@ -76,7 +75,6 @@ function asistenteCultivo() {
     const humSust = parseFloat(prompt("Introduce la humedad del sustrato en %: "));
     const phSust = parseFloat(prompt("Introduce el pH del sustrato: "));
 
-    
 
     switch (etapa) {
         case "1":
@@ -90,6 +88,8 @@ function asistenteCultivo() {
             break;
     }
 
+
+    //Advertencias y creación de tabla con fecha para registro
     const fecha = new Date()
 
     if (advertencias.length > 0) {
@@ -101,4 +101,4 @@ function asistenteCultivo() {
 }
 
 // Llamada a la función principal
-//asistenteCultivo();
+asistenteCultivo();
