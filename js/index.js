@@ -1,3 +1,4 @@
+
 //Calcula porcentaje de desviación
 function porcentajeDesviacion(valor, min, max) {
     if (valor < min) {
@@ -116,3 +117,28 @@ function asistenteCultivo() {
         alert("Buenas noticias! Todos los parámetros están dentro del rango recomendado!✔");
     }
 }
+
+// Array de usuarios y contraseñas
+const usuarios = [
+    { usuario: "Nico", contrasenia: "1234" },
+    { usuario: "Diego", contrasenia: "2345" },
+    { usuario: "Coder", contrasenia: "3456" },
+];
+
+// Función para validar el usuario
+function validarUsuario() {
+    const usuarioIngresado = prompt("Ingrese su nombre de usuario:");
+    const contraseniaIngresada = prompt("Ingrese su contraseña:");
+
+    const usuarioEncontrado = usuarios.find(
+        (usuario) => usuario.usuario === usuarioIngresado && usuario.contrasenia === contraseniaIngresada);
+
+    if (usuarioEncontrado) {
+        alert("🍀Bienvenido " + usuarioIngresado + "!🍀");
+        asistenteCultivo(); 
+    } else {
+        alert("Nombre de usuario y/o contraseña incorrectos. Intente nuevamente o regístrese.");
+    }
+}
+
+validarUsuario();
