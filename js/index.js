@@ -1,16 +1,4 @@
-
-//Calcula porcentaje de desviación
-function porcentajeDesviacion(valor, min, max) {
-    if (valor < min) {
-        return ((min - valor) / min) * 100;
-    } else if (valor > max) {
-        return ((valor - max) / max) * 100;
-    } else {
-        return 0;
-    }
-}
-
-//Creacion clase para las distintas etapas
+// Definir la clase Etapas primero
 class Etapas {
     constructor(rangoTempAmb, rangoHumAmb, rangoHumSust, rangoPhSust) {
         this.rangoTempAmb = rangoTempAmb;
@@ -19,14 +7,12 @@ class Etapas {
         this.rangoPhSust = rangoPhSust;
     }
 
-    // Compara con rangos recomendados según la etapa
     verificarParametros(tempAmb, humAmb, humSust, phSust) {
         const alertaRango = [];
         const porcentajeDesviacionTemp = porcentajeDesviacion(tempAmb, this.rangoTempAmb.min, this.rangoTempAmb.max);
         const porcentajeDesviacionHumAmb = porcentajeDesviacion(humAmb, this.rangoHumAmb.min, this.rangoHumAmb.max);
         const porcentajeDesviacionHumSust = porcentajeDesviacion(humSust, this.rangoHumSust.min, this.rangoHumSust.max);
         const porcentajeDesviacionPhSust = porcentajeDesviacion(phSust, this.rangoPhSust.min, this.rangoPhSust.max);
-
 
         if (tempAmb < this.rangoTempAmb.min || tempAmb > this.rangoTempAmb.max) {
             alertaRango.push("🌡 La temperatura registrada de " + tempAmb + "ºC está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoTempAmb.min + "ºC y " + this.rangoTempAmb.max + "ºC.\nPorcentaje de desviación de la temperatura ambiente: " + Math.round(porcentajeDesviacionTemp) + "%");
@@ -48,7 +34,18 @@ class Etapas {
     }
 }
 
-//Creación objetos etapas con sus rangos de parámetros
+// Calcula porcentaje de desviación
+function porcentajeDesviacion(valor, min, max) {
+    if (valor < min) {
+        return ((min - valor) / min) * 100;
+    } else if (valor > max) {
+        return ((valor - max) / max) * 100;
+    } else {
+        return 0;
+    }
+}
+
+// Creación objetos etapas con sus rangos de parámetros
 const plantula = new Etapas(
     { min: 21, max: 26 },
     { min: 65, max: 75 },
@@ -70,75 +67,82 @@ const floracion = new Etapas(
     { min: 6.0, max: 6.5 }
 );
 
+// Objeto para almacenar las instancias de Etapas
+const etapasMap = {
+    plantula,
+    vegetativa,
+    floracion
+};
 
-//Función principal
-function asistenteCultivo() {
-    let etapa = prompt("BIENVENIDX A TU ASISTENTE DE CULTIVO\n\nSelecciona la etapa de cultivo. Ingresa:\n1. 🌱Plántula\n2. 🌳Vegetativa\n3. 💐Floración ");
-    let etapaValida = etapa === "1" || etapa === "2" || etapa === "3";
-    let advertencias = [];
+// Variable para almacenar la etapa seleccionada
+let etapaSeleccionada;
 
-    while (!etapaValida) {
-        if (etapa === null) {
-            alert("😮 Lamentamos que quieras irte, te esperamos de regreso! 🤝🏼");
-            return
+// Función para seleccionar la etapa
+function seleccionarEtapa(nombreEtapa) {
+    etapaSeleccionada = etapasMap[nombreEtapa];
+    mostrarTarjeta();
+}
+
+// Función para mostrar la tarjeta de la etapa seleccionada
+function mostrarTarjeta() {
+    const cardContainer = document.querySelector(".card-verificacion#card-verificacion");
+    cardContainer.style.display = etapaSeleccionada ? "block" : "none";
+}
+
+// Obtener elementos por su ID
+const plantulaCard = document.querySelector("#plantula-card");
+const vegetativaCard = document.querySelector("#vegetativa-card");
+const floracionCard = document.querySelector("#floracion-card");
+
+// Asignar funciones al evento onclick después de haber definido las funciones
+plantulaCard.addEventListener("click", function () { seleccionarEtapa("plantula"); });
+vegetativaCard.addEventListener("click", function () { seleccionarEtapa("vegetativa"); });
+floracionCard.addEventListener("click", function () { seleccionarEtapa("floracion"); });
+
+// Get the button element by its ID
+const verificarParametrosBtn = document.getElementById("verificarParametrosBtn");
+
+// Añadir evento click al botón
+verificarParametrosBtn.addEventListener("click", function () {
+    verificarParametros();
+});
+
+// Función para obtener los valores de los campos de entrada
+function obtenerValoresEntrada() {
+    const tempAmb = parseFloat(document.querySelector("#tempAmb").value);
+    const humAmb = parseFloat(document.querySelector("#humAmb").value);
+    const humSust = parseFloat(document.querySelector("#humSust").value);
+    const phSust = parseFloat(document.querySelector("#phSust").value);
+
+    return { tempAmb, humAmb, humSust, phSust };
+}
+
+// Función para verificar los parámetros
+function verificarParametros() {
+    const valoresEntrada = obtenerValoresEntrada();
+    const tempAmb = valoresEntrada.tempAmb;
+    const humAmb = valoresEntrada.humAmb;
+    const humSust = valoresEntrada.humSust;
+    const phSust = valoresEntrada.phSust;
+
+    if (etapaSeleccionada) {
+        const alertaRango = etapaSeleccionada.verificarParametros(tempAmb, humAmb, humSust, phSust);
+
+        // Advertencias y creación de tabla con fecha para registro
+        const fecha = new Date();
+
+        if (alertaRango.length > 0) {
+            alert("⛔Advertencias⛔\n\n" + alertaRango.join("\n\n"));
+            console.table(fecha + "\n\n" + alertaRango.join("\n\n"));
         } else {
-            etapa = prompt("⛔Etapa de cultivo no válida. Intenta nuevamente!\n\n1. 🌱Plántula\n2. 🌳Vegetativa\n3. 💐Floración ");
-            etapaValida = etapa === "1" || etapa === "2" || etapa === "3";
+            alert("Buenas noticias! Todos los parámetros están dentro del rango recomendado!✔");
         }
-    }
-
-    // Ingreso valores de los parámetros
-    const tempAmb = parseFloat(prompt("Introduce la temperatura ambiente en ºC: "));
-    const humAmb = parseFloat(prompt("Introduce la humedad relativa ambiente en %: "));
-    const humSust = parseFloat(prompt("Introduce la humedad del sustrato en %: "));
-    const phSust = parseFloat(prompt("Introduce el pH del sustrato: "));
-
-
-    switch (etapa) {
-        case "1":
-            advertencias = plantula.verificarParametros(tempAmb, humAmb, humSust, phSust);
-            break;
-        case "2":
-            advertencias = vegetativa.verificarParametros(tempAmb, humAmb, humSust, phSust);
-            break;
-        case "3":
-            advertencias = floracion.verificarParametros(tempAmb, humAmb, humSust, phSust);
-            break;
-    }
-
-
-    //Advertencias y creación de tabla con fecha para registro
-    const fecha = new Date()
-
-    if (advertencias.length > 0) {
-        alert("⛔Advertencias⛔\n\n" + advertencias.join("\n\n"));
-        console.table(fecha + "\n\n" + advertencias.join("\n\n"))
     } else {
-        alert("Buenas noticias! Todos los parámetros están dentro del rango recomendado!✔");
+        alert("Selecciona una etapa antes de verificar los parámetros.");
     }
 }
 
-// Array de usuarios y contraseñas
-const usuarios = [
-    { usuario: "Nico", contrasenia: "1234" },
-    { usuario: "Diego", contrasenia: "2345" },
-    { usuario: "Coder", contrasenia: "3456" },
-];
-
-// Función para validar el usuario
-function validarUsuario() {
-    const usuarioIngresado = prompt("Te damos la bienvenida a tu Asistente de Cultivos!\n\nIngrese su nombre de usuario: ");
-    const contraseniaIngresada = prompt("Te damos la bienvenida a tu Asistente de Cultivos!\n\nIngrese su contraseña: ");
-
-    const usuarioEncontrado = usuarios.find(
-        (usuario) => usuario.usuario === usuarioIngresado && usuario.contrasenia === contraseniaIngresada);
-
-    if (usuarioEncontrado) {
-        alert("🍀Bienvenido " + usuarioIngresado + "!🍀");
-        asistenteCultivo(); 
-    } else {
-        alert("Nombre de usuario y/o contraseña incorrectos. Intente nuevamente o regístrese.");
-    }
-}
-
+// Validar usuario al cargar la página
 validarUsuario();
+toggleTarjeta(); // Para asegurarse de que la tarjeta se oculte inicialmente
+

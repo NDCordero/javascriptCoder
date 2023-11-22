@@ -1,20 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>Asistente de cultivo medicinal</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/styles.css">
-        <script defer src="js/index.js"></script>
-    </head>
-    <body>
-        <h1>Asistente de Cultivo Medicinal</h1>
-        <h2>En que etapa se encuentra tu cultivo?</h2>
-        <ol class="etapas-cultivo">
-            <li>🌱 Plántula </li>
-            <li>🌳 Vegetativa </li>
-            <li>💐 Floración </li>
-        </ol>
-        <p>Valida tu usuario y comienza a disfrutar de los consejos de tu <strong>Asistente Personal!</strong></p>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Asistente de cultivo medicinal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <script defer src="js/index.js"></script>
+</head>
+
+<body>
+    <h1 id="titulo">Asistente de Cultivo Medicinal</h1>
+    <h2>En qué etapa se encuentra tu cultivo?</h2>
+    <div id="etapas-container" class="etapas-container">
+        <div class="etapa-card" id="plantula-card">
+            <h2>Plántula</h2>
+            <p>Tu planta está asomando?</p>
+        </div>
+        <div class="etapa-card" id="vegetativa-card">
+            <h2>Vegetativa</h2>
+            <p>Etapa plena de crecimiento</p>
+        </div>
+        <div class="etapa-card" id="floracion-card">
+            <h2>Floración</h2>
+            <p>Cuida todos los detalles, estás en la etapa final</p>
+        </div>
+    </div>
+    <div id="card-verificacion" class="card-verificacion">
+        <p>Ingrese los parámetros para la etapa seleccionada:</p>
+        <input id="tempAmb" type="text" placeholder="Ingrese la temperatura" required>
+        <input id="humAmb" type="text" placeholder="Ingrese la humedad relativa" required>
+        <input id="humSust" type="text" placeholder="Ingrese la humedad del sustrato" required>
+        <input id="phSust" type="text" placeholder="Ingrese el pH del sustrato" required>
+        <button class="button" id="verificarParametrosBtn">Verificar Parámetros</button>
+
+    </div>
+</body>
+
 </html>
