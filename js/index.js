@@ -15,19 +15,20 @@ class Etapas {
         const porcentajeDesviacionPhSust = porcentajeDesviacion(phSust, this.rangoPhSust.min, this.rangoPhSust.max);
 
         if (tempAmb < this.rangoTempAmb.min || tempAmb > this.rangoTempAmb.max) {
-            alertaRango.push("🌡 La temperatura registrada de " + tempAmb + "ºC está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoTempAmb.min + "ºC y " + this.rangoTempAmb.max + "ºC.\nPorcentaje de desviación de la temperatura ambiente: " + Math.round(porcentajeDesviacionTemp) + "%");
+            alertaRango.push(`🌡 La temperatura registrada de ${tempAmb}ºC está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre ${this.rangoTempAmb.min}ºC y ${this.rangoTempAmb.max}ºC. Porcentaje de desviación de la temperatura ambiente: ${Math.round(porcentajeDesviacionTemp)}%`);
         }
 
+
         if (humAmb < this.rangoHumAmb.min || humAmb > this.rangoHumAmb.max) {
-            alertaRango.push("☔ La humedad relativa ambiente registrada de " + humAmb + "% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoHumAmb.min + " y " + this.rangoHumAmb.max + "%.\nPorcentaje de desviación de la humedad ambiente: " + Math.round(porcentajeDesviacionHumAmb) + "%");
+            alertaRango.push(`☔ La humedad relativa ambiente registrada de ${humAmb}% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre ${this.rangoHumAmb.min} y ${this.rangoHumAmb.max}%. Porcentaje de desviación de la humedad ambiente: ${Math.round(porcentajeDesviacionHumAmb)}%`);
         }
 
         if (humSust < this.rangoHumSust.min || humSust > this.rangoHumSust.max) {
-            alertaRango.push("💧 La humedad del sustrato registrada de " + humSust + "% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoHumSust.min + " y " + this.rangoHumSust.max + "%.\nPorcentaje de desviación de la humedad del sustrato: " + Math.round(porcentajeDesviacionHumSust) + "%");
+            alertaRango.push(`💧 La humedad del sustrato registrada de ${humSust}% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre ${this.rangoHumSust.min} y ${this.rangoHumSust.max}%. Porcentaje de desviación de la humedad del sustrato: ${Math.round(porcentajeDesviacionHumSust)}%`);
         }
 
         if (phSust < this.rangoPhSust.min || phSust > this.rangoPhSust.max) {
-            alertaRango.push("⚠ El pH del sustrato registrado de " + phSust + "está fuera del el rango recomendado para esta etapa. Se sugiere que se encuentre entre " + this.rangoPhSust.min + " y " + this.rangoPhSust.max + ".\nPorcentaje de desviación del Ph: " + Math.round(porcentajeDesviacionPhSust) + "%");
+            alertaRango.push(`⚠ El pH del sustrato registrado de ${phSust} está fuera del el rango recomendado para esta etapa. Se sugiere que se encuentre entre ${this.rangoPhSust.min} y ${this.rangoPhSust.max}. Porcentaje de desviación del Ph: ${Math.round(porcentajeDesviacionPhSust)}%`);
         }
 
         return alertaRango;
@@ -35,7 +36,7 @@ class Etapas {
 }
 
 // Calcula porcentaje de desviación
-function porcentajeDesviacion(valor, min, max) {
+const porcentajeDesviacion = (valor, min, max) => {
     if (valor < min) {
         return ((min - valor) / min) * 100;
     } else if (valor > max) {
@@ -43,7 +44,50 @@ function porcentajeDesviacion(valor, min, max) {
     } else {
         return 0;
     }
-}
+};
+
+// Función para obtener los valores de los campos de entrada
+const obtenerValoresEntrada = () => {
+    const tempAmb = parseFloat(document.querySelector("#tempAmb").value);
+    const humAmb = parseFloat(document.querySelector("#humAmb").value);
+    const humSust = parseFloat(document.querySelector("#humSust").value);
+    const phSust = parseFloat(document.querySelector("#phSust").value);
+
+    return { tempAmb, humAmb, humSust, phSust };
+};
+
+// Función para mostrar la tarjeta de la etapa seleccionada
+const mostrarTarjeta = () => {
+    const cardContainer = document.querySelector(".card-verificacion#card-verificacion");
+    cardContainer.style.display = etapaSeleccionada ? "block" : "none";
+};
+
+// Función para mostrar la tarjeta de desviaciones
+const mostrarDesviaciones = (desviaciones, nombreEtapaSeleccionada) => {
+    const tarjetaExistente = document.querySelector(".tarjeta");
+    if (tarjetaExistente) {
+        tarjetaExistente.remove();
+    }
+
+    // Crear una nueva tarjeta con las desviaciones o el mensaje de buenos resultados
+    const tarjetaHTML = desviaciones && desviaciones.length > 0 ?
+        `<div class="tarjeta">
+            <div class="contenido-tarjeta">
+                <h2>Chequeá estos parámetros! ⚠</h2>
+                <ul>
+                    ${desviaciones.map(desviacion => `<li>${desviacion}</li>`).join("")}
+                </ul>
+            </div>
+        </div>` :
+        `<div class="tarjeta">
+            <div class="contenido-tarjeta">
+                <p>Buenas noticias! Todos los parámetros están dentro del rango recomendado! ✔</p>
+            </div>
+        </div>`;
+
+    // Insertar la tarjeta
+    document.body.insertAdjacentHTML("beforeend", tarjetaHTML);
+};
 
 // Creación objetos etapas con sus rangos de parámetros
 const plantula = new Etapas(
@@ -75,19 +119,7 @@ const etapasMap = {
 };
 
 // Variable para almacenar la etapa seleccionada
-let etapaSeleccionada;
-
-// Función para seleccionar la etapa
-function seleccionarEtapa(nombreEtapa) {
-    etapaSeleccionada = etapasMap[nombreEtapa];
-    mostrarTarjeta();
-}
-
-// Función para mostrar la tarjeta de la etapa seleccionada
-function mostrarTarjeta() {
-    const cardContainer = document.querySelector(".card-verificacion#card-verificacion");
-    cardContainer.style.display = etapaSeleccionada ? "block" : "none";
-}
+let etapaSeleccionada = null;
 
 // Obtener elementos por su ID
 const plantulaCard = document.querySelector("#plantula-card");
@@ -95,54 +127,53 @@ const vegetativaCard = document.querySelector("#vegetativa-card");
 const floracionCard = document.querySelector("#floracion-card");
 
 // Asignar funciones al evento onclick después de haber definido las funciones
-plantulaCard.addEventListener("click", function () { seleccionarEtapa("plantula"); });
-vegetativaCard.addEventListener("click", function () { seleccionarEtapa("vegetativa"); });
-floracionCard.addEventListener("click", function () { seleccionarEtapa("floracion"); });
+plantulaCard.addEventListener("click", () => seleccionarEtapa("plantula"));
+vegetativaCard.addEventListener("click", () => seleccionarEtapa("vegetativa"));
+floracionCard.addEventListener("click", () => seleccionarEtapa("floracion"));
 
-// Get the button element by its ID
-const verificarParametrosBtn = document.getElementById("verificarParametrosBtn");
+// Boton verificar parámetros
+const verificarParametrosBtn = document.querySelector("#verificarParametrosBtn");
+verificarParametrosBtn.addEventListener("click", () => verificarParametros());
 
-// Añadir evento click al botón
-verificarParametrosBtn.addEventListener("click", function () {
-    verificarParametros();
-});
-
-// Función para obtener los valores de los campos de entrada
-function obtenerValoresEntrada() {
-    const tempAmb = parseFloat(document.querySelector("#tempAmb").value);
-    const humAmb = parseFloat(document.querySelector("#humAmb").value);
-    const humSust = parseFloat(document.querySelector("#humSust").value);
-    const phSust = parseFloat(document.querySelector("#phSust").value);
-
-    return { tempAmb, humAmb, humSust, phSust };
+function seleccionarEtapa(nombreEtapa) {
+    etapaSeleccionada = etapasMap[nombreEtapa];
+    mostrarTarjeta();
 }
 
-// Función para verificar los parámetros
 function verificarParametros() {
     const valoresEntrada = obtenerValoresEntrada();
-    const tempAmb = valoresEntrada.tempAmb;
-    const humAmb = valoresEntrada.humAmb;
-    const humSust = valoresEntrada.humSust;
-    const phSust = valoresEntrada.phSust;
 
-    if (etapaSeleccionada) {
-        const alertaRango = etapaSeleccionada.verificarParametros(tempAmb, humAmb, humSust, phSust);
-
-        // Advertencias y creación de tabla con fecha para registro
-        const fecha = new Date();
-
-        if (alertaRango.length > 0) {
-            alert("⛔Advertencias⛔\n\n" + alertaRango.join("\n\n"));
-            console.table(fecha + "\n\n" + alertaRango.join("\n\n"));
-        } else {
-            alert("Buenas noticias! Todos los parámetros están dentro del rango recomendado!✔");
-        }
-    } else {
-        alert("Selecciona una etapa antes de verificar los parámetros.");
+    // Validar que se haya seleccionado una etapa
+    if (!etapaSeleccionada) {
+        mostrarTarjetaMensaje("Por favor, selecciona una etapa antes de verificar los parámetros.");
+        return;
     }
+
+    // Validar que todos los valores sean números
+    if (isNaN(valoresEntrada.tempAmb) || isNaN(valoresEntrada.humAmb) || isNaN(valoresEntrada.humSust) || isNaN(valoresEntrada.phSust)) {
+        mostrarTarjetaMensaje("Por favor, ingresa un número en cada casillero.");
+        return;
+    }
+
+    // Verifica y almacena las alertas
+    const alertaRango = etapaSeleccionada.verificarParametros(valoresEntrada.tempAmb, valoresEntrada.humAmb, valoresEntrada.humSust, valoresEntrada.phSust);
+
+    // Mostrar la tarjeta de desviaciones
+    mostrarDesviaciones(alertaRango);
 }
 
-// Validar usuario al cargar la página
-validarUsuario();
-toggleTarjeta(); // Para asegurarse de que la tarjeta se oculte inicialmente
+function mostrarTarjetaMensaje(mensaje) {
+    const tarjetaExistente = document.querySelector(".tarjeta");
+    if (tarjetaExistente) {
+        tarjetaExistente.remove();
+    }
 
+    // Crear una nueva tarjeta
+    const tarjetaHTML = `<div class="tarjeta">
+                            <div class="contenido-tarjeta">
+                            <p>${mensaje}</p></div>
+                        </div>`;
+
+    // Mostrar la tarjeta
+    document.body.insertAdjacentHTML("beforeend", tarjetaHTML);
+}
