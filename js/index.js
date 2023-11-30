@@ -64,32 +64,42 @@ const mostrarTarjeta = () => {
 
 // Función para mostrar la tarjeta de desviaciones
 function mostrarDesviaciones() {
-    const alertaRango = JSON.parse(localStorage.getItem("alertas")) || [];
+  const alertaRango = JSON.parse(localStorage.getItem("alertas")) || [];
 
-    const tarjetaExistente = document.querySelector(".tarjeta");
-    if (tarjetaExistente) {
-        tarjetaExistente.remove();
-    }
+  const tarjetaExistente = document.querySelector(".tarjeta");
+  tarjetaExistente && tarjetaExistente.remove();
 
-    // Crear una nueva tarjeta con las desviaciones o el mensaje de buenos resultados
-    const tarjetaHTML = alertaRango.length > 0 ?
-        `<div class="tarjeta">
-            <div class="contenido-tarjeta">
-                <h2>Chequeá estos parámetros! ⚠</h2>
-                <ul>
-                    ${alertaRango.map(desviacion => `<li>${desviacion}</li>`).join("")}
-                </ul>
-            </div>
-        </div>` :
-        `<div class="tarjeta">
-            <div class="contenido-tarjeta">
-                <p>Buenas noticias! Todos los parámetros están dentro del rango recomendado! ✔</p>
-            </div>
-        </div>`;
+  // Crear una nueva tarjeta con las desviaciones o alerta Swal de exito
+  const tarjetaHTML = alertaRango && alertaRango.length > 0 ?
+    `<div class="tarjeta">
+      <div class="contenido-tarjeta">
+        <h2>Chequeá estos parámetros! ⚠</h2>
+        <ul>
+          ${alertaRango.map(desviacion => desviacion ? `<li>${desviacion}</li>` : '').join('')}
+        </ul>
+      </div>
+    </div>` :
+    mostrarSwalExito();
 
-    // Insertar la tarjeta
-    document.body.insertAdjacentHTML("beforeend", tarjetaHTML);
+  // Insertar la tarjeta
+  document.body.insertAdjacentHTML("beforeend", tarjetaHTML);
 }
+
+
+// Función para mensaje Swal exitoso 
+function mostrarSwalExito() {
+    Swal.fire({
+        title: "Buen trabajo!",
+        text: "Todos los parámetros se encuentran dentro de los valores recomendados!",
+        icon: "success"
+    }).then(() => {
+        // Eliminar alertas del localStorage después de mostrar éxito
+        localStorage.removeItem("alertas");
+    });
+
+    return "";
+}
+
 
 
 // Creación objetos etapas con sus rangos de parámetros
@@ -148,13 +158,21 @@ function verificarParametros() {
 
     // Validar que se haya seleccionado una etapa
     if (!etapaSeleccionada) {
-        mostrarTarjetaMensaje("Por favor, selecciona una etapa antes de verificar los parámetros.");
+        Swal.fire({
+            icon: "error",
+            title: "Atención!",
+            text: "Por favor, selecciona una etapa antes de verificar los parámetros."
+    });
         return;
     }
 
     // Validar que todos los valores sean números
     if (isNaN(valoresEntrada.tempAmb) || isNaN(valoresEntrada.humAmb) || isNaN(valoresEntrada.humSust) || isNaN(valoresEntrada.phSust)) {
-        mostrarTarjetaMensaje("Por favor, ingresa un número en cada casillero.");
+        Swal.fire({
+            icon: "error",
+            title: "Atención!",
+            text: "Por favor, ingresa un número en cada casillero."
+        });
         return;
     }
 
@@ -162,7 +180,8 @@ function verificarParametros() {
     const alertaRango = etapaSeleccionada.verificarParametros(valoresEntrada.tempAmb, valoresEntrada.humAmb, valoresEntrada.humSust, valoresEntrada.phSust);
 
     // Almacenar en localStorage
-    localStorage.setItem("alertas", JSON.stringify(alertaRango));
+    localStorage.setItem("alertas", JSON.stringify(alertaRango || []));
+
 
     // Mostrar la tarjeta de desviaciones
     mostrarDesviaciones(alertaRango);
