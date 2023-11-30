@@ -63,19 +63,21 @@ const mostrarTarjeta = () => {
 };
 
 // Función para mostrar la tarjeta de desviaciones
-const mostrarDesviaciones = (desviaciones, nombreEtapaSeleccionada) => {
+function mostrarDesviaciones() {
+    const alertaRango = JSON.parse(localStorage.getItem("alertas")) || [];
+
     const tarjetaExistente = document.querySelector(".tarjeta");
     if (tarjetaExistente) {
         tarjetaExistente.remove();
     }
 
     // Crear una nueva tarjeta con las desviaciones o el mensaje de buenos resultados
-    const tarjetaHTML = desviaciones && desviaciones.length > 0 ?
+    const tarjetaHTML = alertaRango.length > 0 ?
         `<div class="tarjeta">
             <div class="contenido-tarjeta">
                 <h2>Chequeá estos parámetros! ⚠</h2>
                 <ul>
-                    ${desviaciones.map(desviacion => `<li>${desviacion}</li>`).join("")}
+                    ${alertaRango.map(desviacion => `<li>${desviacion}</li>`).join("")}
                 </ul>
             </div>
         </div>` :
@@ -87,7 +89,8 @@ const mostrarDesviaciones = (desviaciones, nombreEtapaSeleccionada) => {
 
     // Insertar la tarjeta
     document.body.insertAdjacentHTML("beforeend", tarjetaHTML);
-};
+}
+
 
 // Creación objetos etapas con sus rangos de parámetros
 const plantula = new Etapas(
@@ -158,9 +161,13 @@ function verificarParametros() {
     // Verifica y almacena las alertas
     const alertaRango = etapaSeleccionada.verificarParametros(valoresEntrada.tempAmb, valoresEntrada.humAmb, valoresEntrada.humSust, valoresEntrada.phSust);
 
+    // Almacenar en localStorage
+    localStorage.setItem("alertas", JSON.stringify(alertaRango));
+
     // Mostrar la tarjeta de desviaciones
     mostrarDesviaciones(alertaRango);
 }
+
 
 function mostrarTarjetaMensaje(mensaje) {
     const tarjetaExistente = document.querySelector(".tarjeta");
