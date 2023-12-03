@@ -64,14 +64,14 @@ const mostrarTarjeta = () => {
 
 // Función para mostrar la tarjeta de desviaciones
 function mostrarDesviaciones() {
-  const alertaRango = JSON.parse(localStorage.getItem("alertas")) || [];
+    const alertaRango = JSON.parse(localStorage.getItem("alertas")) || [];
 
-  const tarjetaExistente = document.querySelector(".tarjeta");
-  tarjetaExistente && tarjetaExistente.remove();
+    const tarjetaExistente = document.querySelector(".tarjeta");
+    tarjetaExistente && tarjetaExistente.remove();
 
-  // Crear una nueva tarjeta con las desviaciones o alerta Swal de exito
-  const tarjetaHTML = alertaRango && alertaRango.length > 0 ?
-    `<div class="tarjeta">
+    // Crear una nueva tarjeta con las desviaciones o alerta Swal de exito
+    const tarjetaHTML = alertaRango && alertaRango.length > 0 ?
+        `<div class="tarjeta">
       <div class="contenido-tarjeta">
         <h2>Chequeá estos parámetros! ⚠</h2>
         <ul>
@@ -79,10 +79,10 @@ function mostrarDesviaciones() {
         </ul>
       </div>
     </div>` :
-    mostrarSwalExito();
+        mostrarSwalExito();
 
-  // Insertar la tarjeta
-  document.body.insertAdjacentHTML("beforeend", tarjetaHTML);
+    // Insertar la tarjeta
+    document.body.insertAdjacentHTML("beforeend", tarjetaHTML);
 }
 
 
@@ -162,7 +162,7 @@ function verificarParametros() {
             icon: "error",
             title: "Atención!",
             text: "Por favor, selecciona una etapa antes de verificar los parámetros."
-    });
+        });
         return;
     }
 
@@ -203,3 +203,84 @@ function mostrarTarjetaMensaje(mensaje) {
     // Mostrar la tarjeta
     document.body.insertAdjacentHTML("beforeend", tarjetaHTML);
 }
+
+// Función para verificar si la ubicación está habilitada
+function isLocationEnabled() {
+    return "geolocation" in navigator;
+}
+
+const temperaturaLocal = document.getElementById("temperatura");
+const ubicacionLocal = document.getElementById("ubicacion");
+const obtenerClimaBtn = document.getElementById("obtenerClimaBtn");
+
+// Agregar un evento de clic al botón para obtener información del clima
+obtenerClimaBtn.addEventListener("click", () => {
+    obtenerUbicacion();
+});
+
+// Llama a la función para obtener ubicación al cargar la página
+obtenerUbicacion();
+
+// Función para obtener ubicación automáticamente usando la API de geolocalización del navegador
+function obtenerUbicacion() {
+    navigator.geolocation.getCurrentPosition(
+        position => {
+            const latitud = position.coords.latitude;
+            const longitud = position.coords.longitude;
+
+            // Obtener datos del tiempo usando las coordenadas
+            obtenerDatosDelTiempo(latitud, longitud);
+        },
+        error => {
+            mostrarToast("Error al obtener la ubicación. Por favor, verifica tener la ubicación de tu navegador habilitada.");
+        }
+    );
+}
+
+// Función para mostrar la información del clima en el área lateral
+function mostrarDatosDelTiempo(datos) {
+    temperaturaLocal.textContent = `Temperatura: ${datos.current.temp_c}°C`;
+    ubicacionLocal.textContent = `Ubicación: ${datos.location.name}, ${datos.location.country}`;
+}
+
+// Función para obtener datos del tiempo usando las coordenadas
+async function obtenerDatosDelTiempo(latitud, longitud) {
+    const apiKey = 'fbcbaee28emsh9e5feb94eea783fp15a2c6jsn911be4a20af1';
+    const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${latitud}%2C${longitud}`;
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': apiKey,
+            'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        mostrarDatosDelTiempo(result);
+    } catch (error) {
+        mostrarToast("Error al obtener los datos del tiempo. Por favor, intenta de nuevo.");
+    }
+}
+
+// Función para mostrar Toast
+function mostrarToast(mensaje) {
+    Toastify({
+        text: mensaje,
+        gravity: "top",
+        position: "left",
+        style: {
+            background: "linear-gradient(to right, #D35400, #196F3D)",
+            width: "300px",
+        }
+    }).showToast();
+}
+
+
+//REVISAR ELIMINACION DE ERROR EN CATCH, QUE TIRE UN TOSTIFY SI NO PUEDE USAR LA UBICACION DEL NAVEGADOR
+//QUE SE REINICIEN LOS CAMPOS LUEGO DE VERIFICAR
+//QUE QUEDE MARCADA LA ETAPA QUE TENEMOS SELECCIONADA
+//VERIFICAR VALIDACIONES EN CAMPOS
+

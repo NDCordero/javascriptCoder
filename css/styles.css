@@ -40,9 +40,6 @@ h1, h2, h3 {
     background-color: #45a049;
 }
 
-.etapa-card.seleccionada {
-    background-color: #45a049;
-}
 
 .card-verificacion {
     background-color: #fff;
@@ -96,3 +93,16 @@ h1, h2, h3 {
     font-weight: bold;
 }
 
+.clima-container {
+    color: white;
+    background-color: #409142;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0 0, 0.1);
+    width: 200px; 
+    height: 50px;
+    position: fixed;
+    top: 100px;
+    left: 20px;
+}

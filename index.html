@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.0/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script defer src="js/index.js"></script>
 </head>
 
@@ -38,13 +40,13 @@
         <p>Ingrese los parámetros para la etapa seleccionada:</p>
         <div class="card">
             <label for="tempAmb">Temperatura Ambiente:</label>
-            <input id="tempAmb" type="text" placeholder="Ingrese la temperatura">
+            <input id="tempAmb" type="text" placeholder="Ingrese la temperatura (ºC)">
 
             <label for="humAmb">Humedad Relativa Ambiente:</label>
-            <input id="humAmb" type="text" placeholder="Ingrese la humedad relativa">
+            <input id="humAmb" type="text" placeholder="Ingrese la humedad relativa (%)">
 
             <label for="humSust">Humedad del Sustrato:</label>
-            <input id="humSust" type="text" placeholder="Ingrese la humedad del sustrato">
+            <input id="humSust" type="text" placeholder="Ingrese la humedad del sustrato (%)">
 
             <label for="phSust">pH del Sustrato:</label>
             <input id="phSust" type="text" placeholder="Ingrese el pH del sustrato">
@@ -52,6 +54,15 @@
             <button class="button" id="verificarParametrosBtn">Verificar Parámetros</button>
         </div>
     </div>
+
+    <div class="clima-container" id="clima-container">
+        <div id="temperatura"></div>
+        <div id="ubicacion"></div>
+        <button class="button" id="obtenerClimaBtn">Obtener Información del Clima</button>
+    </div>
+    
+
+
 </body>
 
 </html>
