@@ -157,7 +157,15 @@ function limpiarCamposEntrada() {
 }
 
 function seleccionarEtapa(nombreEtapa) {
+    
+    // Remover la clase "seleccionada" de todas las tarjetas
+    document.querySelectorAll(".etapa-card").forEach(card => card.classList.remove("seleccionada"));
+
     etapaSeleccionada = etapasMap[nombreEtapa];
+    
+    // Aplica la clase "seleccionada" a la tarjeta de la etapa seleccionada
+    document.getElementById(nombreEtapa + "-card").classList.add("seleccionada");
+    
     mostrarTarjeta();
 }
 

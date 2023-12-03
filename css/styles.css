@@ -106,3 +106,8 @@ h1, h2, h3 {
     top: 100px;
     left: 20px;
 }
+
+.etapa-card.seleccionada {
+    background-color: #45a049;
+    color: #fff;
+}
