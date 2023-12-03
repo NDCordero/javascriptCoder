@@ -148,6 +148,14 @@ floracionCard.addEventListener("click", () => seleccionarEtapa("floracion"));
 const verificarParametrosBtn = document.querySelector("#verificarParametrosBtn");
 verificarParametrosBtn.addEventListener("click", () => verificarParametros());
 
+// Función para reiniciar los campos de entrada
+function limpiarCamposEntrada() {
+    document.querySelector("#tempAmb").value = "";
+    document.querySelector("#humAmb").value = "";
+    document.querySelector("#humSust").value = "";
+    document.querySelector("#phSust").value = "";
+}
+
 function seleccionarEtapa(nombreEtapa) {
     etapaSeleccionada = etapasMap[nombreEtapa];
     mostrarTarjeta();
@@ -182,11 +190,12 @@ function verificarParametros() {
     // Almacenar en localStorage
     localStorage.setItem("alertas", JSON.stringify(alertaRango || []));
 
+     // Limpiar campos de entrada
+     limpiarCamposEntrada();
 
     // Mostrar la tarjeta de desviaciones
     mostrarDesviaciones(alertaRango);
 }
-
 
 function mostrarTarjetaMensaje(mensaje) {
     const tarjetaExistente = document.querySelector(".tarjeta");
@@ -279,8 +288,6 @@ function mostrarToast(mensaje) {
 }
 
 
-//REVISAR ELIMINACION DE ERROR EN CATCH, QUE TIRE UN TOSTIFY SI NO PUEDE USAR LA UBICACION DEL NAVEGADOR
-//QUE SE REINICIEN LOS CAMPOS LUEGO DE VERIFICAR
 //QUE QUEDE MARCADA LA ETAPA QUE TENEMOS SELECCIONADA
 //VERIFICAR VALIDACIONES EN CAMPOS
 
