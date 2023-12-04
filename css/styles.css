@@ -1,23 +1,50 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #e6ffe6; 
+    background-color: #f5f5f5;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-x: hidden;
+   
 }
-h1, h2, h3 {
-    color: #1e501f; 
+
+header {
+    background-color: #95eb97;
+    padding: 20px;
+    text-align: center;
+    width:100%;
+    height: 20px;
 }
+
+
+
+
+
+h1, h2 {
+    color: #4CAF50;
+    margin: 0px
+}
+
+h2 {
+
+    margin-top: 50px
+}
+
+h3 {
+    color: #5bd65f; 
+}
+
 #etapas-container {
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
 }
+
 .etapa-card {
     position: relative;
-    background-color: #4CAF50;
+    background-color: #8d6e63; 
     color: white;
     border-radius: 8px;
     cursor: pointer;
@@ -28,12 +55,20 @@ h1, h2, h3 {
     margin-bottom: 20px;
     overflow: hidden;
 }
+
 .etapa-content {
     padding: 18px;
 }
+
 .etapa-card:hover {
-    background-color: #45a049;
+    background-color: #6d4c41; 
 }
+
+.etapa-card.seleccionada {
+    background-color: #45a049;
+    color: #fff;
+}
+
 .card-verificacion {
     background-color: #fff;
     padding: 20px;
@@ -41,6 +76,7 @@ h1, h2, h3 {
     margin-top: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .button {
     background-color: #4CAF50;
     color: white;
@@ -52,9 +88,11 @@ h1, h2, h3 {
     margin-top: 20px;
     transition: background-color 0.3s;
 }
+
 .button:hover {
-    background-color: #45a049;
+    background-color: #388e3c; 
 }
+
 .card {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -80,9 +118,10 @@ h1, h2, h3 {
     color: #4CAF50;
     font-weight: bold;
 }
+
 .clima-container {
     color: white;
-    background-color: #409142;
+    background-color: #4CAF50; 
     padding: 20px;
     border-radius: 8px;
     margin-top: 20px;
@@ -92,11 +131,6 @@ h1, h2, h3 {
     position: fixed;
     top: 100px;
     left: 20px;
-}
-
-.etapa-card.seleccionada {
-    background-color: #45a049;
-    color: #fff;
 }
 
 .card-desviaciones {
