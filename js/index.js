@@ -13,24 +13,18 @@ class Etapas {
         const porcentajeDesviacionHumAmb = porcentajeDesviacion(humAmb, this.rangoHumAmb.min, this.rangoHumAmb.max);
         const porcentajeDesviacionHumSust = porcentajeDesviacion(humSust, this.rangoHumSust.min, this.rangoHumSust.max);
         const porcentajeDesviacionPhSust = porcentajeDesviacion(phSust, this.rangoPhSust.min, this.rangoPhSust.max);
-
         if (tempAmb < this.rangoTempAmb.min || tempAmb > this.rangoTempAmb.max) {
             alertaRango.push(`🌡 La temperatura registrada de ${tempAmb}ºC está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre ${this.rangoTempAmb.min}ºC y ${this.rangoTempAmb.max}ºC. Porcentaje de desviación de la temperatura ambiente: ${Math.round(porcentajeDesviacionTemp)}%`);
         }
-
-
         if (humAmb < this.rangoHumAmb.min || humAmb > this.rangoHumAmb.max) {
             alertaRango.push(`☔ La humedad relativa ambiente registrada de ${humAmb}% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre ${this.rangoHumAmb.min} y ${this.rangoHumAmb.max}%. Porcentaje de desviación de la humedad ambiente: ${Math.round(porcentajeDesviacionHumAmb)}%`);
         }
-
         if (humSust < this.rangoHumSust.min || humSust > this.rangoHumSust.max) {
             alertaRango.push(`💧 La humedad del sustrato registrada de ${humSust}% está fuera del rango recomendado para esta etapa. Se sugiere que se encuentre entre ${this.rangoHumSust.min} y ${this.rangoHumSust.max}%. Porcentaje de desviación de la humedad del sustrato: ${Math.round(porcentajeDesviacionHumSust)}%`);
         }
-
         if (phSust < this.rangoPhSust.min || phSust > this.rangoPhSust.max) {
             alertaRango.push(`⚠ El pH del sustrato registrado de ${phSust} está fuera del el rango recomendado para esta etapa. Se sugiere que se encuentre entre ${this.rangoPhSust.min} y ${this.rangoPhSust.max}. Porcentaje de desviación del Ph: ${Math.round(porcentajeDesviacionPhSust)}%`);
         }
-
         return alertaRango;
     }
 }
@@ -52,7 +46,6 @@ const obtenerValoresEntrada = () => {
     const humAmb = parseFloat(document.querySelector("#humAmb").value);
     const humSust = parseFloat(document.querySelector("#humSust").value);
     const phSust = parseFloat(document.querySelector("#phSust").value);
-
     return { tempAmb, humAmb, humSust, phSust };
 };
 
@@ -65,14 +58,12 @@ const mostrarTarjeta = () => {
 // Función para mostrar la tarjeta de desviaciones
 function mostrarDesviaciones() {
     const alertaRango = JSON.parse(localStorage.getItem("alertas")) || [];
-
-    const tarjetaExistente = document.querySelector(".tarjeta");
+    const tarjetaExistente = document.querySelector(".card-desviaciones");
     tarjetaExistente && tarjetaExistente.remove();
-
     // Crear una nueva tarjeta con las desviaciones o alerta Swal de exito
     const tarjetaHTML = alertaRango && alertaRango.length > 0 ?
-        `<div class="tarjeta">
-      <div class="contenido-tarjeta">
+        `<div class="card-desviaciones">
+      <div>
         <h2>Chequeá estos parámetros! ⚠</h2>
         <ul>
           ${alertaRango.map(desviacion => desviacion ? `<li>${desviacion}</li>` : '').join('')}
@@ -80,11 +71,13 @@ function mostrarDesviaciones() {
       </div>
     </div>` :
         mostrarSwalExito();
-
     // Insertar la tarjeta
     document.body.insertAdjacentHTML("beforeend", tarjetaHTML);
-}
 
+    // Hacer scroll suave hacia el contenedor de desviaciones
+    const desviacionesContainer = document.querySelector(".card-desviaciones");
+    desviacionesContainer.scrollIntoView({ behavior: "smooth" });
+}
 
 // Función para mensaje Swal exitoso 
 function mostrarSwalExito() {
@@ -96,11 +89,8 @@ function mostrarSwalExito() {
         // Eliminar alertas del localStorage después de mostrar éxito
         localStorage.removeItem("alertas");
     });
-
     return "";
 }
-
-
 
 // Creación objetos etapas con sus rangos de parámetros
 const plantula = new Etapas(
@@ -109,14 +99,12 @@ const plantula = new Etapas(
     { min: 60, max: 70 },
     { min: 5.8, max: 6.2 }
 );
-
 const vegetativa = new Etapas(
     { min: 20, max: 25 },
     { min: 50, max: 60 },
     { min: 60, max: 70 },
     { min: 6.0, max: 6.5 }
 );
-
 const floracion = new Etapas(
     { min: 22, max: 26 },
     { min: 40, max: 50 },
@@ -157,15 +145,15 @@ function limpiarCamposEntrada() {
 }
 
 function seleccionarEtapa(nombreEtapa) {
-    
+
     // Remover la clase "seleccionada" de todas las tarjetas
     document.querySelectorAll(".etapa-card").forEach(card => card.classList.remove("seleccionada"));
 
     etapaSeleccionada = etapasMap[nombreEtapa];
-    
-    // Aplica la clase "seleccionada" a la tarjeta de la etapa seleccionada
+
+    // Aplica la clase "seleccionada" a la tarjeta de la etapa elegida
     document.getElementById(nombreEtapa + "-card").classList.add("seleccionada");
-    
+
     mostrarTarjeta();
 }
 
@@ -194,31 +182,12 @@ function verificarParametros() {
 
     // Verifica y almacena las alertas
     const alertaRango = etapaSeleccionada.verificarParametros(valoresEntrada.tempAmb, valoresEntrada.humAmb, valoresEntrada.humSust, valoresEntrada.phSust);
-
     // Almacenar en localStorage
     localStorage.setItem("alertas", JSON.stringify(alertaRango || []));
-
-     // Limpiar campos de entrada
-     limpiarCamposEntrada();
-
+    // Limpiar campos de entrada
+    limpiarCamposEntrada();
     // Mostrar la tarjeta de desviaciones
     mostrarDesviaciones(alertaRango);
-}
-
-function mostrarTarjetaMensaje(mensaje) {
-    const tarjetaExistente = document.querySelector(".tarjeta");
-    if (tarjetaExistente) {
-        tarjetaExistente.remove();
-    }
-
-    // Crear una nueva tarjeta
-    const tarjetaHTML = `<div class="tarjeta">
-                            <div class="contenido-tarjeta">
-                            <p>${mensaje}</p></div>
-                        </div>`;
-
-    // Mostrar la tarjeta
-    document.body.insertAdjacentHTML("beforeend", tarjetaHTML);
 }
 
 // Función para verificar si la ubicación está habilitada
@@ -226,9 +195,9 @@ function isLocationEnabled() {
     return "geolocation" in navigator;
 }
 
-const temperaturaLocal = document.getElementById("temperatura");
-const ubicacionLocal = document.getElementById("ubicacion");
-const obtenerClimaBtn = document.getElementById("obtenerClimaBtn");
+const temperaturaLocal = document.querySelector("#temperatura");
+const ubicacionLocal = document.querySelector("#ubicacion");
+const obtenerClimaBtn = document.querySelector("#obtenerClimaBtn");
 
 // Agregar un evento de clic al botón para obtener información del clima
 obtenerClimaBtn.addEventListener("click", () => {
@@ -244,7 +213,6 @@ function obtenerUbicacion() {
         position => {
             const latitud = position.coords.latitude;
             const longitud = position.coords.longitude;
-
             // Obtener datos del tiempo usando las coordenadas
             obtenerDatosDelTiempo(latitud, longitud);
         },
@@ -264,7 +232,6 @@ function mostrarDatosDelTiempo(datos) {
 async function obtenerDatosDelTiempo(latitud, longitud) {
     const apiKey = 'fbcbaee28emsh9e5feb94eea783fp15a2c6jsn911be4a20af1';
     const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${latitud}%2C${longitud}`;
-
     const options = {
         method: 'GET',
         headers: {
@@ -272,7 +239,6 @@ async function obtenerDatosDelTiempo(latitud, longitud) {
             'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
         }
     };
-
     try {
         const response = await fetch(url, options);
         const result = await response.json();
@@ -295,7 +261,4 @@ function mostrarToast(mensaje) {
     }).showToast();
 }
 
-
-//QUE QUEDE MARCADA LA ETAPA QUE TENEMOS SELECCIONADA
 //VERIFICAR VALIDACIONES EN CAMPOS
-
