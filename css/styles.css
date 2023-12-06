@@ -1,5 +1,5 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Montserrat', sans-serif; 
     background-color: #f5f5f5;
     margin: 0;
     padding: 0;
@@ -7,33 +7,36 @@ body {
     flex-direction: column;
     align-items: center;
     overflow-x: hidden;
-   
+    letter-spacing: 0.5px; 
 }
 
 header {
-    background-color: #95eb97;
+    background-color: #31572C; 
     padding: 20px;
     text-align: center;
-    width:100%;
-    height: 20px;
+    width: 100%;
 }
 
+#logo {
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    width: 70px; 
+    height: auto; 
+}
 
-
-
-
-h1, h2 {
-    color: #4CAF50;
+h1{
+    color: #ECF39E;
     margin: 0px
 }
 
 h2 {
-
+    color: #31572C;
     margin-top: 50px
 }
 
 h3 {
-    color: #5bd65f; 
+    color: #ECF39E; 
 }
 
 #etapas-container {
@@ -44,28 +47,33 @@ h3 {
 
 .etapa-card {
     position: relative;
-    background-color: #8d6e63; 
+    background-color: #31572C;
     color: white;
     border-radius: 8px;
     cursor: pointer;
     text-align: center;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s; /* Añadí transición para una animación más suave */
     width: 200px;
     margin-inline: 2px;
     margin-bottom: 20px;
     overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agregué sombras suaves a las tarjetas de etapas */
+}
+
+.etapa-card:hover {
+    background-color: #132A13;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aumenté la sombra al pasar el ratón */
 }
 
 .etapa-content {
     padding: 18px;
-}
-
-.etapa-card:hover {
-    background-color: #6d4c41; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .etapa-card.seleccionada {
-    background-color: #45a049;
+    background-color: #4F772D;
     color: #fff;
 }
 
@@ -77,20 +85,25 @@ h3 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.card-verificacion p{
+    color: #31572C
+}
+
 .button {
-    background-color: #4CAF50;
+    background-color: #4F772D;
     color: white;
-    padding: 10px 20px;
+    padding: 12px 24px; /* Ajusté el espaciado interno del botón */
     border: none;
-    border-radius: 5px;
+    border-radius: 20px; /* Añadí bordes redondeados a los botones */
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     margin-top: 20px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, box-shadow 0.3s; /* Añadí transición para una animación más suave */
 }
 
 .button:hover {
-    background-color: #388e3c; 
+    background-color: #132A13;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Aumenté la sombra al pasar el ratón */
 }
 
 .card {
@@ -101,36 +114,41 @@ h3 {
     margin: 10px;
     width: 300px;
     text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .card input {
     display: block;
     width: calc(100% - 16px);
     box-sizing: border-box;
     border: 1px solid #4CAF50;
     border-radius: 5px;
-    padding: 8px;
+    padding: 10px; 
     margin: 8px 0;
-    min-height: 30px;
+    min-height: 40px; 
+    font-size: 14px;
 }
+
 .card label {
     display: block;
     margin-bottom: 8px;
-    color: #4CAF50;
+    color: #31572C;
     font-weight: bold;
 }
 
 .clima-container {
     color: white;
-    background-color: #4CAF50; 
+    background-color: #31572C;
     padding: 20px;
     border-radius: 8px;
     margin-top: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0 0, 0.1);
-    width: 200px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
     height: 50px;
     position: fixed;
     top: 100px;
     left: 20px;
+    z-index: 999; /* Asegura que el contenedor de clima esté en la parte superior */
 }
 
 .card-desviaciones {

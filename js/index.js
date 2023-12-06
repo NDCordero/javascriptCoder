@@ -60,13 +60,14 @@ function mostrarDesviaciones() {
     const alertaRango = JSON.parse(localStorage.getItem("alertas")) || [];
     const tarjetaExistente = document.querySelector(".card-desviaciones");
     tarjetaExistente && tarjetaExistente.remove();
+    
     // Crear una nueva tarjeta con las desviaciones o alerta Swal de exito
     const tarjetaHTML = alertaRango && alertaRango.length > 0 ?
         `<div class="card-desviaciones">
       <div>
         <h2>Chequeá estos parámetros! ⚠</h2>
         <ul>
-          ${alertaRango.map(desviacion => desviacion ? `<li>${desviacion}</li>` : '').join('')}
+          ${alertaRango.map(desviacion => desviacion ? `<li>${desviacion}</li>` : "").join("")}
         </ul>
       </div>
     </div>` :
@@ -217,7 +218,7 @@ function obtenerUbicacion() {
             obtenerDatosDelTiempo(latitud, longitud);
         },
         error => {
-            mostrarToast("Error al obtener la ubicación. Por favor, verifica tener la ubicación de tu navegador habilitada.");
+            mostrarToast("Error al obtener la ubicación. Por favor, verifica tener la ubicación de tu navegador habilitada e intenta nuevamente.");
         }
     );
 }
@@ -244,7 +245,7 @@ async function obtenerDatosDelTiempo(latitud, longitud) {
         const result = await response.json();
         mostrarDatosDelTiempo(result);
     } catch (error) {
-        mostrarToast("Error al obtener los datos del tiempo. Por favor, intenta de nuevo.");
+        mostrarToast("Error al obtener los datos del tiempo. Por favor, intenta nuevamente en unos minutos.");
     }
 }
 
@@ -255,10 +256,8 @@ function mostrarToast(mensaje) {
         gravity: "top",
         position: "left",
         style: {
-            background: "linear-gradient(to right, #D35400, #196F3D)",
+            background: "linear-gradient(to right, #D35400, #fc0303)",
             width: "300px",
         }
     }).showToast();
 }
-
-//VERIFICAR VALIDACIONES EN CAMPOS
