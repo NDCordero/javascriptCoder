@@ -52,17 +52,17 @@ h3 {
     border-radius: 8px;
     cursor: pointer;
     text-align: center;
-    transition: background-color 0.3s, box-shadow 0.3s; /* Añadí transición para una animación más suave */
+    transition: background-color 0.3s, box-shadow 0.3s; 
     width: 200px;
     margin-inline: 2px;
     margin-bottom: 20px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agregué sombras suaves a las tarjetas de etapas */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .etapa-card:hover {
     background-color: #132A13;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aumenté la sombra al pasar el ratón */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .etapa-content {
@@ -92,18 +92,18 @@ h3 {
 .button {
     background-color: #4F772D;
     color: white;
-    padding: 12px 24px; /* Ajusté el espaciado interno del botón */
+    padding: 12px 24px; 
     border: none;
-    border-radius: 20px; /* Añadí bordes redondeados a los botones */
+    border-radius: 20px;
     cursor: pointer;
     font-size: 14px;
     margin-top: 20px;
-    transition: background-color 0.3s, box-shadow 0.3s; /* Añadí transición para una animación más suave */
+    transition: background-color 0.3s, box-shadow 0.3s; 
 }
 
 .button:hover {
     background-color: #132A13;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Aumenté la sombra al pasar el ratón */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
 .card {
@@ -148,7 +148,7 @@ h3 {
     position: fixed;
     top: 100px;
     left: 20px;
-    z-index: 999; /* Asegura que el contenedor de clima esté en la parte superior */
+    z-index: 999; 
 }
 
 .card-desviaciones {

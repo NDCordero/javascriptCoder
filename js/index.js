@@ -1,4 +1,4 @@
-// Definir la clase Etapas primero
+// Definir la clase Etapas
 class Etapas {
     constructor(rangoTempAmb, rangoHumAmb, rangoHumSust, rangoPhSust) {
         this.rangoTempAmb = rangoTempAmb;
@@ -60,7 +60,7 @@ function mostrarDesviaciones() {
     const alertaRango = JSON.parse(localStorage.getItem("alertas")) || [];
     const tarjetaExistente = document.querySelector(".card-desviaciones");
     tarjetaExistente && tarjetaExistente.remove();
-    
+
     // Crear una nueva tarjeta con las desviaciones o alerta Swal de exito
     const tarjetaHTML = alertaRango && alertaRango.length > 0 ?
         `<div class="card-desviaciones">
@@ -231,13 +231,13 @@ function mostrarDatosDelTiempo(datos) {
 
 // Función para obtener datos del tiempo usando las coordenadas
 async function obtenerDatosDelTiempo(latitud, longitud) {
-    const apiKey = 'fbcbaee28emsh9e5feb94eea783fp15a2c6jsn911be4a20af1';
+    const apiKey = "fbcbaee28emsh9e5feb94eea783fp15a2c6jsn911be4a20af1";
     const url = `https://weatherapi-com.p.rapidapi.com/current.json?q=${latitud}%2C${longitud}`;
     const options = {
-        method: 'GET',
+        method: "GET",
         headers: {
-            'X-RapidAPI-Key': apiKey,
-            'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com'
+            "X-RapidAPI-Key": apiKey,
+            "X-RapidAPI-Host": "weatherapi-com.p.rapidapi.com"
         }
     };
     try {
